@@ -8,7 +8,7 @@ type todoInsertProps = {
 
 function TodoInsert({ onInsert }: todoInsertProps) {
 	const [value, setVaule] = useState<string>('');
-	const onChange = useCallback((e: any) => {
+	const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		setVaule(e.target.value);
 	}, []);
 	const onSubmit = useCallback(

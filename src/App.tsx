@@ -35,29 +35,22 @@ const App: React.FC = () => {
 				text,
 				checked: false,
 			};
-			setTodos(todos.concat(todo));
+			setTodos((todos: todoItem[]) => todos.concat(todo));
 			nextId.current += 1;
 		},
 		[todos],
 	);
 
 	const onRemove = useCallback(
-		(id: number) => {
-			setTodos(todos.filter((todo) => todo.id !== id));
-		},
-		[todos],
+		(id: number) => setTodos((todos: todoItem[]) => todos.filter((todo) => todo.id !== id)),
+		[],
 	);
 
-	const onToggle = useCallback(
-		(id: number) => {
-			setTodos(
-				todos.map((todo: todoItem) =>
-					todo.id === id ? { ...todo, checked: !todo.checked } : todo,
-				),
-			);
-		},
-		[todos],
-	);
+	const onToggle = useCallback((id: number) => {
+		setTodos((todos: todoItem[]) =>
+			todos.map((todo: todoItem) => (todo.id === id ? { ...todo, checked: !todo.checked } : todo)),
+		);
+	}, []);
 	return (
 		<TodoTemplate>
 			<TodoInsert onInsert={onInsert} />
