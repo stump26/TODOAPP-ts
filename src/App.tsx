@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useCallback, useRef } from 'react';
+
+import TodoTemplate from './components/TodoForm/TodoTemplate';
+import TodoInsert from './components/TodoForm/TodoInsert';
+import TodoList from './components/TodoLists/TodoList';
+import { todoItem } from './components/TodoLists/TodoListItem';
+
 import './App.css';
 
 const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+	const [todos, setTodos] = useState<Array<todoItem>>([
+		{
+			id: 1,
+			text: '리액트의 기초 알아보기',
+			checked: true,
+		},
+		{
+			id: 2,
+			text: 'Typescript 기초 알아보기',
+			checked: true,
+		},
+		{
+			id: 3,
+			text: '일정 관리 앱 만들어 보기',
+			checked: false,
+		},
+	]);
+
+	const nextId = useRef(4);
+
+	const onInsert = useCallback(
+		(text: string) => {
+			const todo = {
+				id: nextId.current,
+				text,
+				checked: false,
+			};
+			setTodos(todos.concat(todo));
+			nextId.current += 1;
+		},
+		[todos],
+	);
+
+	return (
+		<TodoTemplate>
+			<TodoInsert onInsert={onInsert} />
+			<TodoList todos={todos} />
+		</TodoTemplate>
+	);
+};
 
 export default App;
