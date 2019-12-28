@@ -41,10 +41,27 @@ const App: React.FC = () => {
 		[todos],
 	);
 
+	const onRemove = useCallback(
+		(id: number) => {
+			setTodos(todos.filter((todo) => todo.id !== id));
+		},
+		[todos],
+	);
+
+	const onToggle = useCallback(
+		(id: number) => {
+			setTodos(
+				todos.map((todo: todoItem) =>
+					todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+				),
+			);
+		},
+		[todos],
+	);
 	return (
 		<TodoTemplate>
 			<TodoInsert onInsert={onInsert} />
-			<TodoList todos={todos} />
+			<TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
 		</TodoTemplate>
 	);
 };
